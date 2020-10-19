@@ -1,10 +1,12 @@
 import nodemailer from 'nodemailer'
 
 export const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: process.env.AWS_HOST,
+    port: 587,
+    secure: false,
     auth: {
-        user: process.env.NEXT_PUBLIC_EMAIL,
-        pass: process.env.NEXT_PUBLIC_PASSWORD
+        user: process.env.AWS_USER,
+        pass: process.env.AWS_PASS
     }
 });
 
