@@ -19,7 +19,7 @@ const Accounts = ({accounts}) => {
                                         e.preventDefault();
                                         const MILISECS = 1000;
                                         const SECONDS = 60;
-                                        const MINUTES = 2;
+                                        const MINUTES = 0.5;
                                         const REPORT_PERIOD = MINUTES * SECONDS * MILISECS;
                                         
                                         const accountUrl = document.getElementById(`accountUrl/${account.id}`).innerText;
