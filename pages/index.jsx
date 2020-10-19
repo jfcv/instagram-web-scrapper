@@ -26,7 +26,7 @@ const Index = (props) => {
     )
 }
 
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
     try {
         const response = await pool.query('SELECT * FROM accounts');
         return {
