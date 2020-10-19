@@ -16,7 +16,7 @@ AWS.config.update({
 
 // create Nodemailer SES transporter
 let transporter = nodemailer.createTransport({
-    SES: new aws.SES({
+    SES: new AWS.SES({
         apiVersion: '2010-12-01'
     })
 });
@@ -44,55 +44,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
         await browser.close();
         
-        //const params = mailOptions(account, name, statsArr);
-
-        // Create sendEmail params
-        const params = {
-            Destination: { /* required */
-            ToAddresses: [
-                process.env.NEXT_PUBLIC_EMAIL,
-                /* more items */
-            ]
-            },
-            Message: { /* required */
-            Body: { /* required */
-                Html: {
-                Charset: "UTF-8",
-                Data: 'Dear customer, we are currently tracking the account: ' + name + '. It has ' + statsArr[0] + ' publications, ' + statsArr[1] + ' account followers '
-                + ' & ' + statsArr[2] + ' accounts followed.' + ' If you want to access to this account click on the following link: ' + account + ' Have a nice day Scrapprter!'
-                },
-                Text: {
-                Charset: "UTF-8",
-                Data: 'Dear customer, we are currently tracking the account: ' + name + '. It has ' + statsArr[0] + ' publications, ' + statsArr[1] + ' account followers '
-                + ' & ' + statsArr[2] + ' accounts followed.' + ' If you want to access to this account click on the following link: ' + account + ' Have a nice day Scrapprter!'
-                }
-            },
-            Subject: {
-                Charset: 'UTF-8',
-                Data: 'Scrapprtup Daily Report!'
-            }
-            },
-            Source: process.env.NEXT_PUBLIC_EMAIL, /* required */
-            ReplyToAddresses: [
-                process.env.NEXT_PUBLIC_EMAIL,
-            /* more items */
-            ],
-        }
-  
-        // Create the promise and SES service object
-        const data = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params);
-        
-        console.log(data);
+        // send some mail
+        const info = await transporter.sendMail({
+            from: process.env.NEXT_PUBLIC_EMAIL,
+            to: process.env.NEXT_PUBLIC_EMAIL,
+            subject: 'Scrapprtup Daily Report!',
+            text: 'Dear customer, we are currently tracking the account: ' + name + '. It has ' + statsArr[0] + ' publications, ' + statsArr[1] + ' account followers '
+            + ' & ' + statsArr[2] + ' accounts followed.' + ' If you want to access to this account click on the following link: ' + account + ' Have a nice day Scrapprter!'
+        })
     
         return res.json({
             message: 'Mail sent successfully',
-            body: 'sent'
+            body: info
         });
     } catch (err) {
         console.error(err);
         return res.json({
             message: 'Mail service not working !',
-            body: 'err'
+            body: err
         });  
     }
 
