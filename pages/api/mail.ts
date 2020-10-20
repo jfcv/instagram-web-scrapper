@@ -9,8 +9,8 @@ import AWS from 'aws-sdk'
 
 // Set the configs
 AWS.config.update({
-    accessKeyId: 'AKIAJLR5H26UUEHME7VA',
-    secretAccessKey: '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',
+    accessKeyId: process.env.AWS_ID,
+    secretAccessKey: process.env.AWS_KEY,
     region: 'us-east-2'
 });
 
